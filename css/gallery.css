@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  touch-action: none;
+}
+
+body {
+  overflow: hidden;
+  display: flex;
+  background: #111;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+#drag-container, #spin-container {
+  position: relative;
+  display: flex;
+  margin: auto;
+  transform-style: preserve-3d;
+  transform: rotateX(-10deg);
+}
+
+#drag-container img, #drag-container video {
+  transform-style: preserve-3d;
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  line-height: 200px;
+  text-align: center;
+  box-shadow: 0 0 8px #fff;
+  box-reflect: below 10px linear-gradient(transparent, transparent, #0005);
+  border-radius: 10px;
+  margin: 0 30px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+#drag-container img:hover, #drag-container video:hover {
+  box-shadow: 0 0 15px #fffd;
+  box-reflect: below 10px linear-gradient(transparent, transparent, #0007);
+}
+
+#drag-container p {
+  display: none;
+}
+
+#ground {
+  width: 900px;
+  height: 900px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(90deg);
+  background: radial-gradient(circle at center, rgba(153, 153, 153, 0.2), transparent);
+}
+
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: #FF69B4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background: #FF1493;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes spinRevert {
+  from {
+    transform: rotateY(360deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+} 

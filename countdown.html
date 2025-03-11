@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waiting for Midnight ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #7971ea);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-value {
+            font-size: 3.5rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            min-width: 100px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' opacity='0.6'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") no-repeat center center;
+            background-size: contain;
+            animation: float 10s linear infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .redirect-message {
+            display: none;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>Waiting for Your Special Moment</h1>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="message">
+            Something beautiful is waiting for you at midnight. 
+            The countdown is on for your special surprise from to Rudaiba ❤️
+        </div>
+        
+        <div class="redirect-message" id="redirect-message">
+            Your surprise is ready! Redirecting you now...
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const numberOfHearts = 20;
+            
+            for (let i = 0; i < numberOfHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                // Random positioning
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.transform = `scale(${Math.random() * 0.7 + 0.3})`;
+                
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Update countdown timer
+        function updateCountdown() {
+            // Get current time in Bangladesh (UTC+6)
+            const now = new Date();
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const bangladeshTime = new Date(utcTime + (3600000 * 6)); // UTC+6
+            
+            // Set target time to midnight in Bangladesh
+            const targetTime = new Date(bangladeshTime);
+            targetTime.setHours(24, 0, 0, 0);
+            
+            // Calculate remaining time
+            const diff = targetTime - bangladeshTime;
+            
+            if (diff <= 0) {
+                // Time's up - redirect to main page
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('redirect-message').style.display = 'block';
+                
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+                
+                return;
+            }
+            
+            // Calculate hours, minutes, seconds
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            // Update the countdown display
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Initialize
+        createHearts();
+        updateCountdown();
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
